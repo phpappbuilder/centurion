@@ -1,5 +1,3 @@
 vendor/
-var/space/*
-!var/
-!var/space/
+
 .idea/
