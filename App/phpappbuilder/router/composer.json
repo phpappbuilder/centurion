@@ -1,0 +1,15 @@
+{
+    "name": "phpappbuilder/router",
+    "description": "router for centurion apps",
+    "type": "centurion-app",
+    "license": "mit",
+    "authors": [
+        {
+            "name": "Вячеслав",
+            "email": "slavik@itservices.in.ua"
+        }
+    ],
+    "require": {
+        "symfony/routing": "^4.1"
+    }
+}

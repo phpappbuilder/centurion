@@ -1,5 +1,5 @@
 vendor/
-var/space/*
+var/phpappbuilder/space/*
 !var/
-!var/space/
+!var/phpappbuilder/space/
 .idea/
