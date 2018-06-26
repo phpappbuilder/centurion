@@ -10,6 +10,5 @@
         }
     ],
     "require": {
-        "symfony/routing": "^4.1"
     }
 }

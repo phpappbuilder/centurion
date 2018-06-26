@@ -1,8 +1,7 @@
 <?php
 require_once __DIR__ . '/vendor/autoload.php';
 
-use Space\Builder;
+use App\phpappbuilder\router\Router;
 
-
-$a = new Builder();
-print_r($a->Build('App'));
+$router = new Router();
+print_r($router->run());
