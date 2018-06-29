@@ -24,7 +24,9 @@ class Router
             {
                 foreach($space as $key => $value)
                 {
-                    $this->collection->addCollection(require $value);}
+                    $router = new $value();
+                    $this->collection->addCollection($router->__return());
+                }
             }
         }
 
@@ -65,7 +67,8 @@ class Router
             {
                 foreach($space as $key => $value)
                 {
-                    $collection->addCollection(require $value);
+                    $router = new $value();
+                    $collection->addCollection($router->__return());
                 }
             }
             $context = new RequestContext('');
