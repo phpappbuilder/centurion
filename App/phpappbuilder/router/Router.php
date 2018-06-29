@@ -24,8 +24,7 @@ class Router
             {
                 foreach($space as $key => $value)
                 {
-                    $this->collection->addCollection(require $value);
-                }
+                    $this->collection->addCollection(require $value);}
             }
         }
 

@@ -6,7 +6,7 @@ use App\phpappbuilder\router\TestController;
 $routes = new RouteCollection();
 $routes->add(
     'route_name',
-    new Route('/foo.{trans}', array('_controller' => TestController::class , '_action' => 'pt'))
+    new Route('sergey/foo.{trans}', array('_controller' => TestController::class , '_action' => 'pt') )
 );
 //$routes->addPrefix('/admin');
 // ...

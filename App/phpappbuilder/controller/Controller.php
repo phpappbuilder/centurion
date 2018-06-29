@@ -1,5 +1,5 @@
 <?php
-namespace App\phpappbuilder\router;
+namespace App\phpappbuilder\controller;
 
 use \Symfony\Component\HttpFoundation\Response as Resp;
 
