@@ -1,7 +1,7 @@
 <?php
 namespace App\phpappbuilder\controller;
 
-use \Symfony\Component\HttpFoundation\Response as Resp;
+use App\phpappbuilder\controller\Response as Resp;
 
 class Controller
 {
