@@ -16,9 +16,11 @@ class TestController extends Controller
 
             //print_r($template->render('component/header'));
 
-            $this->response->setContent($template->render('index', [
+            $this->response->setContent($template
+                ->render('index', [
                 'title' => 'Centurion app',
                 'header' => $template->render('component/header', [
+                    'auth'=>$template->render('component/header/auth'),
                     'LogoSmall'=>'<b>app</b>',
                     'LogoBig'=>'<b>Centurion</b>App',
                     'dropdown'=>[['fa_icon'=>'fa fa-cloud-download', 'label'=>'new!' , /*'label_type'=>'warning' ,*/ 'header'=>'hello world', 'content'=>'<a href="/admin">Click this</a>' , 'footer'=> '<a href="#">See All Messages</a>']]
