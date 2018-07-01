@@ -5,7 +5,7 @@ use App\phpappbuilder\router\Router;
 
 use Tracy\Debugger;
 Debugger::$strictMode = true;
-Debugger::$showBar = true;
+//Debugger::$showBar = true;
 Debugger::enable();
 
 $router = new Router();

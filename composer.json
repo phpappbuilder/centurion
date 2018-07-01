@@ -18,7 +18,8 @@
         "oomphinc/composer-installers-extender": "^1.1",
         "phpappbuilder/space": "^1.0",
         "symfony/routing": "^4.1",
-        "symfony/http-foundation": "^4.1"
+        "symfony/http-foundation": "^4.1",
+        "almasaeed2010/adminlte": "^2.4"
     },
     "extra": {
         "installer-types": ["centurion-app"],
