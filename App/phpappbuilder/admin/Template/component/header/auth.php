@@ -1,41 +1,24 @@
 <li class="dropdown user user-menu">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-        <img src="/App/phpappbuilder/admin/assets/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-        <span class="hidden-xs">user<!--Alexander Pierce--></span>
-    </a>
-    <ul class="dropdown-menu">
-        <!-- User image -->
-        <li class="user-header">
-            <img src="/App/phpappbuilder/admin/assets/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
+        <span class="hidden-xs">@<?=$user?></span>
+    </a>
+    <ul class="dropdown-menu" style="width:auto;">
+        <!-- User image -->
+        <li class="user-header" style="height:auto;">
+            <div class="img-circle" style="border-width:2px; border-color: #ffcc66; background-color: #fff; width:50px; height:50px; text-align: center; margin: auto; vertical-align: middle;"><b style="font-size:30px;"><?=mb_strtoupper(substr($user,0,1))?></b></div>
             <p>
-                Alexander Pierce - Web Developer
-                <small>Member since Nov. 2012</small>
+                @<?=$user?>
             </p>
         </li>
-        <!-- Menu Body -->
-        <li class="user-body">
-            <div class="row">
-                <div class="col-xs-4 text-center">
-                    <a href="#">Followers</a>
-                </div>
-                <div class="col-xs-4 text-center">
-                    <a href="#">Sales</a>
-                </div>
-                <div class="col-xs-4 text-center">
-                    <a href="#">Friends</a>
-                </div>
-            </div>
-            <!-- /.row -->
-        </li>
+
         <!-- Menu Footer-->
         <li class="user-footer">
-            <div class="pull-left">
-                <a href="#" class="btn btn-default btn-flat">Profile</a>
-            </div>
-            <div class="pull-right">
-                <a href="#" class="btn btn-default btn-flat">Sign out</a>
-            </div>
+            <?php if(isset($actions) && is_array($actions) && count($actions)>0) {?>
+                <?php foreach($actions as $action) {?>
+                    <a href="<?php echo $action['href']; ?>" class="btn btn-default btn-flat"><?php echo $action['name']; ?></a>
+                <?php } ?>
+            <?php } ?>
         </li>
     </ul>
 </li>

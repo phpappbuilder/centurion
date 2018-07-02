@@ -7,6 +7,7 @@ use App\my\example\TestController;
 
 class Route extends RouteCollection
 {
+    protected $NamePrefix = 'MyExample';
     public function FirstRoute()
         {
             $this->_route = 'sergey/foo.{trans}';
