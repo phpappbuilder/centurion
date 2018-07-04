@@ -6,7 +6,7 @@
  * Time: 16:07
  */
 
-namespace App\phpappbuilder\helpers;
+namespace App\phpappbuilder\template;
 
 
 class Tag
@@ -15,6 +15,6 @@ class Tag
         $str = '';
         foreach ($params as $key => $value){if(!isset($value) or $value==''){$str.=' '.$key;}else{$str.=' '.$key.'="'.$value.'"';}}
         if ($close){$fin = "\n".$content."\n</".$tag.">";$c='';}else{$fin="\n";$c=' /';}
-        return "<".$tag.$params.$c.">".$fin;
+        return "<".$tag.$str.$c.">".$fin;
     }
 }

@@ -1,36 +1,48 @@
 <?php
-namespace App\phpappbuilder\helpers;
+namespace App\phpappbuilder\helpers\Helpers;
 
-use App\phpappbuilder\template\Template as Templater;
-use App\phpappbuilder\template\Template;
+use App\phpappbuilder\helpers\HelperInterface;
 
-
-class Form
+class Collection implements HelperInterface
 {
-    public $params=[];
-    public $prefix='';
-    protected $structure=[];
-    protected $data=[];
+    public $name = '';
+    public $params = [];
+    public $value;
+    public $data;
+    public $object = [];
 
     public function __construct($params){
         $this->params=$params;
+        return $this;
     }
 
-    public function setPrefix(string $prefix){
-        $this->prefix=$prefix;
+    public function setName($name)
+    {
+        $this->name=$name;
+        return $this;
     }
 
-    public function setHelper($name , $object){
-        $this->structure[$name]=$object;
+    public function setValue($value)
+    {
+        $this->object = $value;
+        return $this;
     }
 
-    public function setData(array $data){
-        $this->data = $data;
+    public function setHelper($name, $object){
+        $this->object[$name]=$object;
+        return $this;
     }
 
-    public function render(){
+    public function render(): string{
         $tpl = new Templater(Template::class);
         $this->params['content']='';
+
+
+
+
+
+
+
 
         foreach($this->structure as $key => $value){
             if($this->prefix!=''){$this->structure[$key]->setName($prefix.'['.$key.']');}
@@ -44,7 +56,3 @@ class Form
         return $tpl->render('frame', $this->params);
     }
 }
-/*
-name
-prefix[name]
-*/
