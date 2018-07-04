@@ -11,6 +11,7 @@ use App\phpappbuilder\template\Tag;
 ?>
 
 <?php
+bdump($collapse);
     echo Tag::Get('div',['class'=>'box box-default'],
         Tag::Get('div', ['class'=>'box-header with-border'],
             Tag::Get('h3', ['class'=>'box-title'],

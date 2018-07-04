@@ -5,6 +5,6 @@ interface HelperInterface
 {
     public function __construct($params);
     public function setName($name);
-    public function setValue($value);
+    public function setData($value);
     public function render():string ;
 }

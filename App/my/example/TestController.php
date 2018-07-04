@@ -1,6 +1,7 @@
 <?php
 namespace App\my\example;
 
+use App\phpappbuilder\helpers\Form;
 use App\phpappbuilder\router\Router;
 use App\phpappbuilder\controller\Controller;
 use \Symfony\Component\HttpFoundation\Response;
@@ -11,6 +12,31 @@ class TestController extends Controller
 {
     public function pt()
         {
+            $collection = new \App\phpappbuilder\helpers\Helpers\Collection(['name'=>'Test collection', 'description'=>'Я хз как это заработало!']);
+            $collection->setHelper('item_1', new \App\phpappbuilder\helpers\Helpers\Text(['name'=>'first_fu**ing_input', 'placeholder'=>'Please write text now!']));
+
+            $form = new Form(['title'=>'My test form', 'collapse'=>true , 'close'=>true, 'description'=>'this is test description' ,
+                'form'=>[
+                        'method'=>'get',
+                        'action'=>'admin',
+                        'class'=>'new-centurion'
+                ]
+            ]);
+            $form->setHelper('item_1', new \App\phpappbuilder\helpers\Helpers\Text(['name'=>'first_fu**ing_input', 'placeholder'=>'Please write text now!']))
+            ->setHelper('item_collection', $collection)
+            ->setData(['item_1'=>123456, 'item_collection'=>[['item_1'=>'глотай']]])
+            ->setPrefix('forma');
+
+
+
+
+
+
+
+
+
+
+
             $template = new Template( AdminTemplate::class );
             $this->response->setContent($template
                 ->render('index', [
@@ -107,7 +133,9 @@ class TestController extends Controller
                     Footer
                 </div>
                 <!-- /.box-footer-->
-            </div>',
+            </div>'.$form->render()
+
+                    ,
                     'footer'=>$template->render('component/footer', [
                         'text'=>'    <strong>Copyright &copy; 2014-2016 <a href="https://adminlte.io">Almsaeed Studio</a>.</strong> All rights
     reserved.'

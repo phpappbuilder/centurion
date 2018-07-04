@@ -2,13 +2,14 @@
 namespace App\phpappbuilder\helpers\Helpers;
 
 use App\phpappbuilder\helpers\HelperInterface;
+use App\phpappbuilder\template\Template as Templater;
+use App\phpappbuilder\helpers\Template;
 
 class Collection implements HelperInterface
 {
     public $name = '';
     public $params = [];
-    public $value;
-    public $data;
+    public $data = [];
     public $object = [];
 
     public function __construct($params){
@@ -22,9 +23,9 @@ class Collection implements HelperInterface
         return $this;
     }
 
-    public function setValue($value)
+    public function setData($value)
     {
-        $this->object = $value;
+        $this->data = $value;
         return $this;
     }
 
@@ -35,24 +36,32 @@ class Collection implements HelperInterface
 
     public function render(): string{
         $tpl = new Templater(Template::class);
-        $this->params['content']='';
-
-
-
-
-
-
-
-
-        foreach($this->structure as $key => $value){
-            if($this->prefix!=''){$this->structure[$key]->setName($prefix.'['.$key.']');}
-            else {$this->structure[$key]->setName($key);}
-
-            if(isset($this->data[$key]) && !is_null($this->data[$key])){
-                $this->structure[$key]->setValue($this->data[$key]);
+        $count=count($this->data);
+        $last_id=$count--;
+        $content = '';
+        for ($i=0;$i<$count;$i++) {
+            $frame_item = '';
+            foreach ($this->object as $key => $value) {
+                $this->object[$key]->setName($this->name . '[' . $i . ']' . '[' . $key . ']');
+                $this->object[$key]->setData($this->data[$i][$key]);
+                $frame_item .= $this->object[$key]->render();
             }
-            $this->params['content'].=$this->structure[$key]->render();
+            $content.= $tpl->render('helper/collection/frame', ['content' => $frame_item]);
         }
-        return $tpl->render('frame', $this->params);
+
+        $frame_item = '';
+        foreach ($this->object as $key => $value) {
+            $this->object[$key]->setName($this->name . '[' . '<%=id%>' . ']' . '[' . $key . ']');
+            $frame_item .= $this->object[$key]->render();
+        }
+        $template= $tpl->render('helper/collection/frame', ['content' => $frame_item]);
+
+        return $tpl->render('helper/collection', [
+            'last_id'=>$last_id,
+            'templater'=>$template,
+            'content'=>$content,
+            'name'=>isset($this->params['name'])?$this->params['name']:null,
+            'description'=>isset($this->params['description'])?$this->params['description']:null
+        ]);
     }
 }

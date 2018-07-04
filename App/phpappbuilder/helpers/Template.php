@@ -1,6 +1,6 @@
 <?php
 
-namespace App\my\example;
+namespace App\phpappbuilder\helpers;
 
 class Template
 {
