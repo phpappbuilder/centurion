@@ -14,8 +14,8 @@ class TestController extends Controller
         {
             $collection = new \App\phpappbuilder\helpers\Helpers\Collection(['name'=>'Test collection', 'description'=>'Я хз как это заработало!']);
             $collection->setHelper('item_1', new \App\phpappbuilder\helpers\Helpers\Text(['name'=>'first_fu**ing_input', 'placeholder'=>'Please write text now!']));
-
-            $form = new Form(['title'=>'My test form', 'collapse'=>true , 'close'=>true, 'description'=>'this is test description' ,
+            $collection->setHelper('item_2', new \App\phpappbuilder\helpers\Helpers\Text(['name'=>'Prosto tak', 'placeholder'=>'Please write text now!']));
+            $form = new Form(['title'=>'My test form', 'submit'=>true, 'description'=>'this is test description' ,
                 'form'=>[
                         'method'=>'get',
                         'action'=>'admin',
@@ -24,7 +24,7 @@ class TestController extends Controller
             ]);
             $form->setHelper('item_1', new \App\phpappbuilder\helpers\Helpers\Text(['name'=>'first_fu**ing_input', 'placeholder'=>'Please write text now!']))
             ->setHelper('item_collection', $collection)
-            ->setData(['item_1'=>123456, 'item_collection'=>[['item_1'=>'глотай']]])
+            ->setData(['item_1'=>123456, 'item_collection'=>[['item_1'=>'Привет', 'item_2'=>'Привет'],['item_1'=>'sdfsdf']]])
             ->setPrefix('forma');
 
 

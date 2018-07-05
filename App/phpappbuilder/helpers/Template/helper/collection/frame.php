@@ -6,7 +6,7 @@ use App\phpappbuilder\template\Tag;
 ?>
 
 <?php
-echo Tag::Get('div',['class'=>'box-success centurion-helper-collection-frame'],
+echo Tag::Get('div',['class'=>'box box-danger centurion-helper-collection-frame', 'style'=>'border-left-style: outset; border-left-color:#000; border-right-style: outset; border-right-color:#000; border-bottom-style: outset; border-bottom-color:#000;'],
     Tag::Get('div', ['class'=>'box-header with-border'],
         Tag::Get('h3', ['class'=>'box-title'],
             '#').

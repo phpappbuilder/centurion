@@ -1,3 +1,6 @@
+<?php
+use Space\Get as Space;
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,6 +14,10 @@
     <link rel="stylesheet" href="/App/phpappbuilder/admin/assets/bower_components/Ionicons/css/ionicons.min.css">
     <link rel="stylesheet" href="/App/phpappbuilder/admin/assets/dist/css/AdminLTE.min.css">
     <link rel="stylesheet" href="/App/phpappbuilder/admin/assets/dist/css/skins/_all-skins.min.css">
+    <?php if (Space::Collection('phpappbuilder/admin/add_css') != null) {
+    foreach(Space::Collection('phpappbuilder/admin/add_css') as $value) {?>
+        <link rel="stylesheet" href="<?php echo $value; ?>">
+    <?php }} ?>
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -68,6 +75,9 @@
 <script src="/App/phpappbuilder/admin/assets/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <script src="/App/phpappbuilder/admin/assets/bower_components/fastclick/lib/fastclick.js"></script>
 <script src="/App/phpappbuilder/admin/assets/dist/js/adminlte.min.js"></script>
-
+<?php bdump(Space::Collection('phpappbuilder/admin/add_js'));  if (Space::Collection('phpappbuilder/admin/add_js') != null) {
+        foreach(Space::Collection('phpappbuilder/admin/add_js') as $value) {?>
+    <script src="<?php echo $value; ?>"></script>
+<?php }} ?>
 </body>
 </html>

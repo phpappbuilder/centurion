@@ -37,28 +37,30 @@ class Collection implements HelperInterface
     public function render(): string{
         $tpl = new Templater(Template::class);
         $count=count($this->data);
-        $last_id=$count--;
+        $last_id=$count-1;
         $content = '';
         for ($i=0;$i<$count;$i++) {
             $frame_item = '';
             foreach ($this->object as $key => $value) {
-                $this->object[$key]->setName($this->name . '[' . $i . ']' . '[' . $key . ']');
-                $this->object[$key]->setData($this->data[$i][$key]);
-                $frame_item .= $this->object[$key]->render();
+                $object = clone $value;
+                $object->setName($this->name . '[' . $i . ']' . '[' . $key . ']');
+                if(isset($this->data[$i][$key])){$object->setData($this->data[$i][$key]);}
+                $frame_item .= $object->render();
+                unset($object);
             }
             $content.= $tpl->render('helper/collection/frame', ['content' => $frame_item]);
         }
 
         $frame_item = '';
         foreach ($this->object as $key => $value) {
-            $this->object[$key]->setName($this->name . '[' . '<%=id%>' . ']' . '[' . $key . ']');
-            $frame_item .= $this->object[$key]->render();
+            $value->setName($this->name . '[' . '<%=id%>' . ']' . '[' . $key . ']');
+            $frame_item .= $value->render();
         }
         $template= $tpl->render('helper/collection/frame', ['content' => $frame_item]);
 
         return $tpl->render('helper/collection', [
             'last_id'=>$last_id,
-            'templater'=>$template,
+            'JsTemplater'=>$template,
             'content'=>$content,
             'name'=>isset($this->params['name'])?$this->params['name']:null,
             'description'=>isset($this->params['description'])?$this->params['description']:null
