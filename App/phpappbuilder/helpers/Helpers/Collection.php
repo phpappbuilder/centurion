@@ -26,6 +26,7 @@ class Collection implements HelperInterface
     public function setData($value)
     {
         $this->data = $value;
+        sort($this->data);
         return $this;
     }
 
