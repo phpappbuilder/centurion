@@ -12,14 +12,11 @@ use App\phpappbuilder\template\Tag;
     <div class="box-header with-border">
         <h3 class="box-title"><?php echo $name; ?></h3>
         <div class="box-tools pull-right">
-            <?php echo Tag::Get('button',[ 'type'=>"button", 'class'=>"btn btn-box-tool centurion-helper-add-collection-item", 'onclick'=>'CenturionCollectionHelperAdd(this)'],'Add '.Tag::Get('i', ['class'=>'fa fa-plus-circle'])); ?>
+            <?php echo Tag::Get('button',[ 'type'=>"button", 'class'=>"btn btn-sm centurion-helper-add-collection-item", 'onclick'=>'CenturionCollectionHelperAdd(this)'],'Добавить эллемент '.Tag::Get('i', ['class'=>'fa fa-plus-circle'])); ?>
         </div>
     </div>
     <div class="box-body">
         <?php echo isset($content)?$content:''; ?>
-    </div>
-    <div class="box-footer">
-        <?php echo $description; ?>
     </div>
     <script type="text/html" class="helper-collection-template">
         <?php echo $JsTemplater; ?>

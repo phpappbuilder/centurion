@@ -115,7 +115,6 @@ class Collection implements HelperInterface
 
         $frame_item = '';
         foreach ($this->object as $key => $value) {
-            bdump($this->name . '[' . '<%=id_'.$this->number.'%>' . ']' . '[' . $key . '] - '.$this->recurs($this->object).' number('.$this->number.')');
             $value->setName($this->name . '[' . '<%=id_'.$this->number.'%>' . ']' . '[' . $key . ']');
             $frame_item .= $value->render();
         }

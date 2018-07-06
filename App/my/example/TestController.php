@@ -13,13 +13,13 @@ class TestController extends Controller
     public function pt()
         {
             bdump($this->request->request->get('forma'));
-            $t_con = new \App\phpappbuilder\helpers\Helpers\Collection(['name'=>'Пездюки']);
-            $t_con->setHelper('item_1', new \App\phpappbuilder\helpers\Helpers\Text(['name'=>'Имя пездюка', 'placeholder'=>'Как зовут твоего пездюка?']));
+            //$t_con = new \App\phpappbuilder\helpers\Helpers\Collection(['name'=>'Пездюки']);
+            //$t_con->setHelper('item_1', new \App\phpappbuilder\helpers\Helpers\Text(['name'=>'Имя пездюка', 'placeholder'=>'Как зовут твоего пездюка?']));
 
 
             $test_collection=new \App\phpappbuilder\helpers\Helpers\Collection(['name'=>'Test collection']);
             $test_collection->setHelper('item_1', new \App\phpappbuilder\helpers\Helpers\Text(['name'=>'first_fu**ing_input', 'placeholder'=>'Please write text now!']));
-            $test_collection->setHelper('pezdyuki', $t_con);
+            //$test_collection->setHelper('pezdyuki', $t_con);
 
             $collection = new \App\phpappbuilder\helpers\Helpers\Collection(['name'=>'Test collection']);
             $collection->setHelper('item_1', new \App\phpappbuilder\helpers\Helpers\Text(['name'=>'first_fu**ing_input', 'placeholder'=>'Please write text now!']));
@@ -122,12 +122,7 @@ class TestController extends Controller
                             ['value'=>'Collapsed Sidebar', 'active'=>true]
                         ]
                     ]),
-                    'content'=>'<div class="callout callout-info"><h4>Tip!</h4><p>Add the sidebar-collapse class to the body tag to get this layout. You should combine this option with afixed layout if you have a long sidebar. Doing that will prevent your page content from getting stretchedvertically.</p>
-            </div>
-            <!-- Default box -->
-            '.$form->render()
-
-                    ,
+                    'content'=>$form->render(),
                     'footer'=>$template->render('component/footer', [
                         'text'=>'    <strong>Copyright &copy; 2014-2016 <a href="https://adminlte.io">Almsaeed Studio</a>.</strong> All rights
     reserved.'

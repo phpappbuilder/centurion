@@ -1,8 +1,5 @@
 function JsTemplater(str, data){
-        var fn = !/\W/.test(str) ?
-            cache[str] = cache[str] ||
-                tmpl(document.getElementById(str).innerHTML) :
-            new Function("obj",
+        var fn = new Function("obj",
                 "var p=[],print=function(){p.push.apply(p,arguments);};" +
                 "with(obj){p.push('" +
                 str

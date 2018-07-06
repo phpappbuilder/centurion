@@ -75,7 +75,7 @@ use Space\Get as Space;
 <script src="/App/phpappbuilder/admin/assets/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <script src="/App/phpappbuilder/admin/assets/bower_components/fastclick/lib/fastclick.js"></script>
 <script src="/App/phpappbuilder/admin/assets/dist/js/adminlte.min.js"></script>
-<?php bdump(Space::Collection('phpappbuilder/admin/add_js'));  if (Space::Collection('phpappbuilder/admin/add_js') != null) {
+<?php if (Space::Collection('phpappbuilder/admin/add_js') != null) {
         foreach(Space::Collection('phpappbuilder/admin/add_js') as $value) {?>
     <script src="<?php echo $value; ?>"></script>
 <?php }} ?>
