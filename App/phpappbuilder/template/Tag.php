@@ -17,4 +17,10 @@ class Tag
         if ($close){$fin = "\n".$content."\n</".$tag.">";$c='';}else{$fin="\n";$c=' /';}
         return "<".$tag.$str.$c.">".$fin;
     }
+
+    static function GetParams($params=[]){
+        $str = '';
+        foreach ($params as $key => $value){if(!isset($value) or $value==''){$str.=' '.$key;}else{$str.=' '.$key.'="'.$value.'"';}}
+        return $str;
+    }
 }

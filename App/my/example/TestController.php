@@ -13,13 +13,18 @@ class TestController extends Controller
     public function pt()
         {
             bdump($this->request->request->get('forma'));
-           // $test_collection=new \App\phpappbuilder\helpers\Helpers\Collection(['name'=>'Test collection']);
-           // $test_collection->setHelper('item_1', new \App\phpappbuilder\helpers\Helpers\Text(['name'=>'first_fu**ing_input', 'placeholder'=>'Please write text now!']));
+            $t_con = new \App\phpappbuilder\helpers\Helpers\Collection(['name'=>'Пездюки']);
+            $t_con->setHelper('item_1', new \App\phpappbuilder\helpers\Helpers\Text(['name'=>'Имя пездюка', 'placeholder'=>'Как зовут твоего пездюка?']));
+
+
+            $test_collection=new \App\phpappbuilder\helpers\Helpers\Collection(['name'=>'Test collection']);
+            $test_collection->setHelper('item_1', new \App\phpappbuilder\helpers\Helpers\Text(['name'=>'first_fu**ing_input', 'placeholder'=>'Please write text now!']));
+            $test_collection->setHelper('pezdyuki', $t_con);
 
             $collection = new \App\phpappbuilder\helpers\Helpers\Collection(['name'=>'Test collection']);
             $collection->setHelper('item_1', new \App\phpappbuilder\helpers\Helpers\Text(['name'=>'first_fu**ing_input', 'placeholder'=>'Please write text now!']));
             $collection->setHelper('item_2', new \App\phpappbuilder\helpers\Helpers\Text(['name'=>'Prosto tak', 'placeholder'=>'Please write text now!']));
-           // $collection->setHelper('item_3', $test_collection);
+            $collection->setHelper('item_3', $test_collection);
             $form = new Form(['title'=>'My test form', 'submit'=>true, 'description'=>'this is test description' ,
                 'form'=>[
                         'method'=>'post',
@@ -120,26 +125,7 @@ class TestController extends Controller
                     'content'=>'<div class="callout callout-info"><h4>Tip!</h4><p>Add the sidebar-collapse class to the body tag to get this layout. You should combine this option with afixed layout if you have a long sidebar. Doing that will prevent your page content from getting stretchedvertically.</p>
             </div>
             <!-- Default box -->
-            <div class="box">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Title</h3>
-
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
-                            <i class="fa fa-minus"></i></button>
-                        <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove">
-                            <i class="fa fa-times"></i></button>
-                    </div>
-                </div>
-                <div class="box-body">
-                    Start creating your amazing application!
-                </div>
-                <!-- /.box-body -->
-                <div class="box-footer">
-                    Footer
-                </div>
-                <!-- /.box-footer-->
-            </div>'.$form->render()
+            '.$form->render()
 
                     ,
                     'footer'=>$template->render('component/footer', [

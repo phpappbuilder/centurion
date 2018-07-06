@@ -8,14 +8,19 @@ use App\phpappbuilder\template\Tag;
  * $form = []
  */
 ?>
-
-<?php
-    echo Tag::Get('form', $form,
-            Tag::Get('div',['class'=>'box box-default'],
-        Tag::Get('div', ['class'=>'box-header with-border'],
-        Tag::Get('h3', ['class'=>'box-title'],
-                isset($title)?$title:'').
-                        Tag::Get('div', ['class'=>'box-tools pull-right'], $submit?Tag::Get('button',[ 'type'=>"submit", 'class'=>"btn btn-sm"],Tag::Get('i', ['class'=>'fa fa-save'])):'')).
-                Tag::Get('div', ['class'=>'box-body'], $content).
-                Tag::Get('div', ['class'=>'box-footer'], isset($description)?$description:'')));
-?>
+<form <?php echo Tag::GetParams($form); ?>>
+    <div class="box box-default">
+        <div class="box-header with-border">
+            <h3 class="box-title"><?php echo isset($title)?$title:''; ?></h3>
+            <div class="box-tools pull-right">
+                <?php echo $submit?Tag::Get('button',[ 'type'=>"submit", 'class'=>"btn btn-sm"],Tag::Get('i', ['class'=>'fa fa-save'])):''; ?>
+            </div>
+        </div>
+        <div class="box-body">
+            <?php echo $content; ?>
+        </div>
+        <div class="box-footer">
+            <?php echo isset($description)?$description:''; ?>
+        </div>
+    </div>
+</form>
