@@ -13,17 +13,17 @@ class TestController extends Controller
     public function pt()
         {
             bdump($this->request->request->get('forma'));
-            //$t_con = new \App\phpappbuilder\helpers\Helpers\Collection(['name'=>'Пездюки']);
-            //$t_con->setHelper('item_1', new \App\phpappbuilder\helpers\Helpers\Text(['name'=>'Имя пездюка', 'placeholder'=>'Как зовут твоего пездюка?']));
+            $t_con = new \App\phpappbuilder\helpers\Helpers\Collection(['name'=>'Пездюки']);
+            $t_con->setHelper('item_1', new \App\phpappbuilder\helpers\Helpers\Text(['label'=>'Имя пездюка', 'placeholder'=>'Как зовут твоего пездюка?', 'required'=>'']));
 
 
             $test_collection=new \App\phpappbuilder\helpers\Helpers\Collection(['name'=>'Test collection']);
-            $test_collection->setHelper('item_1', new \App\phpappbuilder\helpers\Helpers\Text(['name'=>'first_fu**ing_input', 'placeholder'=>'Please write text now!']));
-            //$test_collection->setHelper('pezdyuki', $t_con);
+            $test_collection->setHelper('item_1', new \App\phpappbuilder\helpers\Helpers\Text(['label'=>'first_fu**ing_input', 'placeholder'=>'Please write text now!']));
+            $test_collection->setHelper('pezdyuki', $t_con);
 
             $collection = new \App\phpappbuilder\helpers\Helpers\Collection(['name'=>'Test collection']);
-            $collection->setHelper('item_1', new \App\phpappbuilder\helpers\Helpers\Text(['name'=>'first_fu**ing_input', 'placeholder'=>'Please write text now!']));
-            $collection->setHelper('item_2', new \App\phpappbuilder\helpers\Helpers\Text(['name'=>'Prosto tak', 'placeholder'=>'Please write text now!']));
+            $collection->setHelper('item_1', new \App\phpappbuilder\helpers\Helpers\Text(['label'=>'first_fu**ing_input', 'placeholder'=>'Please write text now!']));
+            $collection->setHelper('item_2', new \App\phpappbuilder\helpers\Helpers\Text(['label'=>'Prosto tak', 'placeholder'=>'Please write text now!']));
             $collection->setHelper('item_3', $test_collection);
             $form = new Form(['title'=>'My test form', 'submit'=>true, 'description'=>'this is test description' ,
                 'form'=>[
@@ -31,22 +31,12 @@ class TestController extends Controller
                         'action'=>Router::url('MyExampleFirstRoute',['trans'=>'config'])
                 ]
             ]);
-            $form->setHelper('item_1', new \App\phpappbuilder\helpers\Helpers\Text(['name'=>'first_fu**ing_input', 'placeholder'=>'Please write text now!']))
+            $form->setHelper('item_1', new \App\phpappbuilder\helpers\Helpers\Textarea(['label'=>'first_fu**ing_input', 'placeholder'=>'Please write text now!', 'required'=>'']))
+                ->setHelper('pass', new \App\phpappbuilder\helpers\Helpers\Password(['label'=>'Password', 'placeholder'=>'Please write password']))
             ->setHelper('item_collection', $collection)
             ->setPrefix('forma');
 
             if($this->request->request->has('forma')){$form->setData($this->request->request->get('forma'));}
-
-
-
-
-
-
-
-
-
-
-
 
             $template = new Template( AdminTemplate::class );
             $this->response->setContent($template

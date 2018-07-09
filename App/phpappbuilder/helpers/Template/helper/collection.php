@@ -18,8 +18,9 @@ use App\phpappbuilder\template\Tag;
     <div class="box-body">
         <?php echo isset($content)?$content:''; ?>
     </div>
-    <script type="text/html" class="helper-collection-template">
-        <?php echo $JsTemplater; ?>
-    </script>
+
+        <script type="text/html" class="helper-collection-template">
+            <?php echo $JsTemplater; ?>
+        </script>
 </div>
 

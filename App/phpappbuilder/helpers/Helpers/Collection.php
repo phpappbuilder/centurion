@@ -11,7 +11,6 @@ class Collection implements HelperInterface
     public $params = [];
     public $data = [];
     public $object = [];
-
     public $first_collection = true;
     public $number = 0;
 
@@ -38,7 +37,7 @@ class Collection implements HelperInterface
         return $this;
     }
 
-    public function recursiveCollectionsCount()//возвращает true если у объекта есть дети
+    public function recursiveCollectionsCount()
         {
             $status = false;
             foreach($this->object as $value){
@@ -57,7 +56,6 @@ class Collection implements HelperInterface
             }
         }
     }
-
 
     public function recurs($collection){
         $count=[];
@@ -94,7 +92,6 @@ class Collection implements HelperInterface
         }
     }
 
-
     public function render(): string{
         $tpl = new Templater(Template::class);
         $count=count($this->data);
@@ -124,7 +121,7 @@ class Collection implements HelperInterface
             'number'=>$this->number,
             'count'=>$this->recurs($this->object),
             'last_id'=>$last_id,
-            'JsTemplater'=>$template,
+            'JsTemplater'=>str_replace (['<','>','"',"'"],['{{!S!S!S!S!}}','{{!K!S!S!J!}}','{{!P!S!S!T!}}','{{!D!S!S!F!}}'],$template),
             'content'=>$content,
             'name'=>isset($this->params['name'])?$this->params['name']:null,
             'description'=>isset($this->params['description'])?$this->params['description']:null
