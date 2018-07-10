@@ -36,13 +36,14 @@ class Form
         $this->params['content']='';
 
         foreach($this->structure as $key => $value){
-            if($this->prefix!=''){$this->structure[$key]->setName($this->prefix.'['.$key.']');}
-            else {$this->structure[$key]->setName($key);}
+            $object = clone $value;
+            if($this->prefix!=''){$object->setName($this->prefix.'['.$key.']');}
+            else {$object->setName($key);}
 
             if(isset($this->data[$key]) && !is_null($this->data[$key])){
-                $this->structure[$key]->setData($this->data[$key]);
+                $object->setData($this->data[$key]);
             }
-            $this->params['content'].=$this->structure[$key]->render();
+            $this->params['content'].=$object->render();
         }
         return $tpl->render('frame', $this->params);
     }

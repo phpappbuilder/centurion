@@ -12,9 +12,12 @@ class TestController extends Controller
 {
     public function pt()
         {
-            bdump($this->request->request->get('forma'));
+            bdump($this->request->request->get('forma'), 'содержимое формы');
             $t_con = new \App\phpappbuilder\helpers\Helpers\Collection(['name'=>'Пездюки']);
             $t_con->setHelper('item_1', new \App\phpappbuilder\helpers\Helpers\Text(['label'=>'Имя пездюка', 'placeholder'=>'Как зовут твоего пездюка?', 'required'=>'']));
+            $t_con->setHelper('time', new \App\phpappbuilder\helpers\Helpers\Time(['label'=>'Время пездюка', 'required'=>'']));
+            $t_con->setHelper('color', new \App\phpappbuilder\helpers\Helpers\Color(['label'=>'Цвет пездюка', 'required'=>'']));
+            $t_con->setHelper('sex', new \App\phpappbuilder\helpers\Helpers\Radio(['label'=>'Пол пездюка', 'required'=>'', 'data'=>['men'=>'Мужской', 'women'=>"Женский"]]));
 
 
             $test_collection=new \App\phpappbuilder\helpers\Helpers\Collection(['name'=>'Test collection']);
