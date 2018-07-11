@@ -5,11 +5,11 @@ use App\phpappbuilder\helpers\HelperInterface;
 use App\phpappbuilder\template\Template as Templater;
 use App\phpappbuilder\helpers\Template;
 
-class Radio implements HelperInterface
+class CheckboxGroup implements HelperInterface
 {
     public $name = '';
     public $params = [];
-    public $data = '';
+    public $data = [];
 
     public function __construct($params){
         $this->params=$params;
@@ -37,18 +37,18 @@ class Radio implements HelperInterface
         foreach($data as $key => $value){
             $params = $this->params;
             if(isset($this->params['data'])){unset($params['data']);}
-            if($this->data == $key){$checked['checked']='';}else{$checked=[];}
-            $inputs.=$tpl->render('helper/radio/frame',[
-                'input'=>array_merge([
-                    'name'=>$this->name,
-                    'type'=>'radio',
+            if(in_array($key,$this->data)){$checked['checked']='';}else{$checked=[];}
+            $inputs.=$tpl->render('helper/checkboxgroup/frame',[
+                'attr'=>array_merge([
+                    'name'=>$this->name.'[]',
+                    'type'=>'checkbox',
                     'value'=>$key
-            ],$params, $checked),
-                  'text'=>$value
+                ],$params, $checked),
+                'name'=>$value
 
             ]);
         }
-        return $tpl->render('helper/radio',['label'=>$label,'content'=>$inputs]);
+        return $tpl->render('helper/checkboxgroup',['label'=>$label,'content'=>$inputs]);
 
     }
 }

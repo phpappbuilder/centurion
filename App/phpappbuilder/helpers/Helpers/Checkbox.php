@@ -5,7 +5,7 @@ use App\phpappbuilder\helpers\HelperInterface;
 use App\phpappbuilder\template\Template as Templater;
 use App\phpappbuilder\helpers\Template;
 
-class Date implements HelperInterface
+class Checkbox implements HelperInterface
 {
     public $name = '';
     public $params = [];
@@ -29,17 +29,16 @@ class Date implements HelperInterface
     }
 
     public function render(): string{
+        if($this->data==1){$checked['checked']='';}else{$checked=[];}
         $tpl = new Templater(Template::class);
         $label = isset($this->params['label'])?$this->params['label']:null;
         if(isset($this->params['label'])){unset($this->params['label']);}
-        return $tpl->render('helper/input', [
+        return $tpl->render('helper/checkbox', [
             'label'=>$label,
             'attr'=>array_merge([
                 'name'=>$this->name,
-                'type'=>'date',
-                'class'=>'form-control',
-                'placeholder'=>isset($this->params['placeholder'])?$this->params['placeholder']:null ,
-                'value'=>isset($this->data)?$this->data:null], $this->params)
-        ]);
+                'type'=>'checkbox',
+                'value'=>1
+        ],$this->params,$checked)]);
     }
 }

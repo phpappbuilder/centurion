@@ -5,7 +5,7 @@ use App\phpappbuilder\helpers\HelperInterface;
 use App\phpappbuilder\template\Template as Templater;
 use App\phpappbuilder\helpers\Template;
 
-class Date implements HelperInterface
+class Wysiwyg implements HelperInterface
 {
     public $name = '';
     public $params = [];
@@ -32,14 +32,13 @@ class Date implements HelperInterface
         $tpl = new Templater(Template::class);
         $label = isset($this->params['label'])?$this->params['label']:null;
         if(isset($this->params['label'])){unset($this->params['label']);}
-        return $tpl->render('helper/input', [
+        return $tpl->render('helper/textarea', [
             'label'=>$label,
+            'value'=>isset($this->data)?$this->data:null,
             'attr'=>array_merge([
                 'name'=>$this->name,
-                'type'=>'date',
-                'class'=>'form-control',
-                'placeholder'=>isset($this->params['placeholder'])?$this->params['placeholder']:null ,
-                'value'=>isset($this->data)?$this->data:null], $this->params)
+                'class'=>'form-control centurion-ckeditor-classic-helper',
+                'placeholder'=>isset($this->params['placeholder'])?$this->params['placeholder']:null], $this->params)
         ]);
     }
 }

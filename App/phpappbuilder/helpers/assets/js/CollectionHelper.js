@@ -73,6 +73,7 @@ function CenturionCollectionHelperAdd(object) {
         }
     }
 
+    CKEDITOR.replaceAll( 'centurion-ckeditor-classic-helper' );
 }
 function CenturionCollectionHelperRemove(object) {
     var obj = object;

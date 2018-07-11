@@ -18,6 +18,9 @@ class TestController extends Controller
             $t_con->setHelper('time', new \App\phpappbuilder\helpers\Helpers\Time(['label'=>'Время пездюка', 'required'=>'']));
             $t_con->setHelper('color', new \App\phpappbuilder\helpers\Helpers\Color(['label'=>'Цвет пездюка', 'required'=>'']));
             $t_con->setHelper('sex', new \App\phpappbuilder\helpers\Helpers\Radio(['label'=>'Пол пездюка', 'required'=>'', 'data'=>['men'=>'Мужской', 'women'=>"Женский"]]));
+            $t_con->setHelper('pidor', new \App\phpappbuilder\helpers\Helpers\Checkbox(['label'=>'Дать леща пездюку',]));
+            $t_con->setHelper('ttr', new \App\phpappbuilder\helpers\Helpers\CheckboxGroup(['label'=>'Признаки пездюка', 'data'=>['pidor'=>'Гавно', 'ne'=>"Няша", 'nez'=>"Гавняша"]]));
+            $t_con->setHelper('text', new \App\phpappbuilder\helpers\Helpers\Wysiwyg(['label'=>'Рассказ о пездюке', 'required'=>'']));
 
 
             $test_collection=new \App\phpappbuilder\helpers\Helpers\Collection(['name'=>'Test collection']);
@@ -37,6 +40,7 @@ class TestController extends Controller
             $form->setHelper('item_1', new \App\phpappbuilder\helpers\Helpers\Textarea(['label'=>'first_fu**ing_input', 'placeholder'=>'Please write text now!', 'required'=>'']))
                 ->setHelper('pass', new \App\phpappbuilder\helpers\Helpers\Password(['label'=>'Password', 'placeholder'=>'Please write password']))
             ->setHelper('item_collection', $collection)
+            ->setHelper('text', new \App\phpappbuilder\helpers\Helpers\Wysiwyg(['label'=>'Рассказ о пездюке', 'required'=>'']))
             ->setPrefix('forma');
 
             if($this->request->request->has('forma')){$form->setData($this->request->request->get('forma'));}
