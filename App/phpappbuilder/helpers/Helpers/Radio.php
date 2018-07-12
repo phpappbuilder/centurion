@@ -45,10 +45,8 @@ class Radio implements HelperInterface
                     'value'=>$key
             ],$params, $checked),
                   'text'=>$value
-
             ]);
         }
         return $tpl->render('helper/radio',['label'=>$label,'content'=>$inputs]);
-
     }
 }
