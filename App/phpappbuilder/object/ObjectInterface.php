@@ -4,7 +4,7 @@ namespace App\phpappbuilder\object;
 
 interface ObjectInterface
 {
-    public function getHelper(); //Хелпер для объекта
+    public function getStructure(); //Хелпер для объекта
     public function getName(); //Возвращает название типа объекта
     public function getIcon(); //Возвращает иконку объекта
     public function getDescription(); //Возвращает описание объекта

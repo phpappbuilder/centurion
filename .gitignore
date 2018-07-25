@@ -1,6 +1,3 @@
 vendor/
-var/phpappbuilder/space/*
-!var/
-!var/phpappbuilder/space/
 .idea/
 composer.lock

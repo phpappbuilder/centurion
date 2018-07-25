@@ -1,0 +1,3 @@
+<?php
+
+return [["path" => 'key/phpappbuilder/router/err404', "name" => 'Reponse for 404 status', "value" => new Symfony\Component\HttpFoundation\Response('Not Found', 404), "bundle" => ["file" => 'App/phpappbuilder/router/SpaceBundle.php', "position" => 0], "checked" => true], ["path" => 'key/phpappbuilder/router/err404', "name" => 'Reponse for 404 status sergey edition', "value" => new App\phpappbuilder\controller\Response('Not Found sergey - edition', 404), "bundle" => ["file" => 'App/my/example/SpaceBundle.php', "position" => 1]]];
