@@ -70,12 +70,30 @@ final class Checking
         if( count(array_intersect($this->allowed, $this->banned))>0 ){
             throw new \Exception("Values in an 'allowed' and 'banned' can not intersect");
         }
+    }
 
-
+    protected function finalCheck(){
+        $this->validCheck();
+        $status = 'ALL_';
+        if (count($this->all_except)>0){
+            $status = 'ALL_';
+            return ['type'=>$status, 'banned'=>array_unique(array_merge($this->all_except , $banned))];
+        } else {
+            if (count($this->none_but)>0){
+                $status = 'NONE_';
+                return ['type'=>$status, 'allowed'=>array_unique(array_merge($this->none_but , $this->allowed))];
+            } else {
+                if ($this->none_but_null){
+                    $status = 'NONE_';
+                    return ['type'=>$status, 'allowed'=>$this->allowed];
+                }
+                return ['type'=>$status, 'banned'=>$this->banned];
+            }
+        }
     }
 
     public function parent($object_class , $check_class){
-
+        $this->getParent();
     }
 
     public function child($object_class , $check_class){
