@@ -93,7 +93,7 @@ final class Checking
     }
 
     public function parent($object_class , $check_class){
-        $this->getParent();
+        $this->getParent($object_class);
     }
 
     public function child($object_class , $check_class){
