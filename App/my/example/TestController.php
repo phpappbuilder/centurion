@@ -7,12 +7,21 @@ use App\phpappbuilder\controller\Controller;
 use \Symfony\Component\HttpFoundation\Response;
 use App\phpappbuilder\template\Template;
 use App\phpappbuilder\admin\Template as AdminTemplate;
+use App\phpappbuilder\object\Checking;
+use App\phpappbuilder\object\RootObject;
 
 class TestController extends Controller
 {
     public function pt()
     {
-            bdump($this->request->request->get('forma'), 'содержимое формы');
+
+
+        $ac = new Checking();
+        $zz = $ac->child(RootObject::class,RootObject::class);
+        bdump($zz, 'check object');
+
+
+            bdump($this->request->request->get('forma'), 'содержимое формы!!!');
             $t_con = new \App\phpappbuilder\helpers\Helpers\Collection(['name'=>'Пездюки']);
             $t_con->setHelper('item_1', new \App\phpappbuilder\helpers\Helpers\Text(['label'=>'Имя пездюка', 'placeholder'=>'Как зовут твоего пездюка?', 'required'=>'']));
             $t_con->setHelper('time', new \App\phpappbuilder\helpers\Helpers\Time(['label'=>'Время пездюка', 'required'=>'']));
@@ -46,6 +55,7 @@ class TestController extends Controller
                 ->setPrefix('forma');
 
         if($this->request->request->has('forma')) {$form->setData($this->request->request->get('forma'));
+
         }
 
             $template = new Template(AdminTemplate::class);

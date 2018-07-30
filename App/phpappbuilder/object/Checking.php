@@ -16,7 +16,6 @@ final class Checking
     public $none_but_null = false;
     public $allowed = [];
     public $banned = [];
-    public $multiple = true;
 
     protected function setCheck($name, $value){
         if (is_array($value)){
@@ -39,10 +38,9 @@ final class Checking
             foreach ($collection as $value){
                 if ($value['object']==$class){
                     if (isset($value['all_except'])){$this->setCheck('all_except',$value['all_except']);}
-                    if (isset($value['none_but'])){if($value['none_but']!=null){$this->setCheck('none_but',$value['none_but']);}else{$this->none_but_null=true;}}
+                    if ($value['none_but']==null or is_null($value['none_but'])){if($value['none_but']==null){$this->none_but_null=true;} else {$this->setCheck('none_but',$value['none_but']);}}
                     if (isset($value['allowed'])){$this->setCheck('allowed',$value['allowed']);}
                     if (isset($value['banned'])){$this->setCheck('banned',$value['banned']);}
-                    if (isset($value['multiple']) && !$value['multiple']){$this->multiple=false;}
                 }
             }
         }
@@ -55,7 +53,7 @@ final class Checking
             foreach ($collection as $value){
                 if ($value['object']==$class){
                     if (isset($value['all_except'])){$this->setCheck('all_except',$value['all_except']);}
-                    if (isset($value['none_but'])){if($value['none_but']!=null){$this->setCheck('none_but',$value['none_but']);}else{$this->none_but_null=true;}}
+                    if (isset($value['none_but']) or is_null($value['none_but'])){if($value['none_but']==null){$this->none_but_null=true;} else {$this->setCheck('none_but',$value['none_but']);}}
                     if (isset($value['allowed'])){$this->setCheck('allowed',$value['allowed']);}
                     if (isset($value['banned'])){$this->setCheck('banned',$value['banned']);}
                 }
@@ -77,16 +75,20 @@ final class Checking
         $status = 'ALL_';
         if (count($this->all_except)>0){
             $status = 'ALL_';
+
             return ['type'=>$status, 'banned'=>array_unique(array_merge($this->all_except , $banned))];
         } else {
             if (count($this->none_but)>0){
                 $status = 'NONE_';
+
                 return ['type'=>$status, 'allowed'=>array_unique(array_merge($this->none_but , $this->allowed))];
             } else {
                 if ($this->none_but_null){
                     $status = 'NONE_';
+
                     return ['type'=>$status, 'allowed'=>$this->allowed];
                 }
+
                 return ['type'=>$status, 'banned'=>$this->banned];
             }
         }
@@ -94,10 +96,103 @@ final class Checking
 
     public function parent($object_class , $check_class){
         $this->getParent($object_class);
+        $final = $this->finalCheck();
+        if ($final['type']=='ALL_') {
+            if (!in_array($check_class, $final['banned'])){
+                return true;
+            } else {
+                return false;
+            }
+        }
+        if ($final['type']=='NONE_') {
+            if (in_array($check_class, $final['allowed'])){
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
 
     public function child($object_class , $check_class){
-
+        $this->getChild($object_class);
+        $final = $this->finalCheck();
+        bdump($final, 'test');
+        if ($final['type']=='ALL_') {
+            if (!in_array($check_class, $final['banned'])){
+                return true;
+            } else {
+                return false;
+            }
+        }
+        if ($final['type']=='NONE_') {
+            if (in_array($check_class, $final['allowed'])){
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
 
+
+    protected function getList(){
+        $collection = Space::Collection('phpappbuilder/object/add');
+        if ($collection != null && is_array($collection) && count($collection)>0){
+            return $collection;
+        }
+        return [];
+    }
+
+    /**
+     * @return array
+     */
+    public function getParentList($object_class): array
+    {
+        $this->getParent($object_class);
+        $final = $this->finalCheck();
+        $list = $this->getList();
+        $result = [];
+        if ($final['type']=='_ALL') {
+            foreach($list as $value){
+                if (!in_array($value, $final['banned'])){
+                    $result[]=$value;
+                }
+            }
+            return $result;
+        }
+        if ($final['type']=='_NONE') {
+            foreach ($list as $value) {
+                if (in_array($value, $final['allowed'])) {
+                    $list[]=$value;
+                }
+            }
+            return $list;
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function getChildList($object_class): array
+    {
+        $this->getChild($object_class);
+        $final = $this->finalCheck();
+        $list = $this->getList();
+        $result = [];
+        if ($final['type']=='_ALL') {
+            foreach($list as $value){
+                if (!in_array($value, $final['banned'])){
+                    $result[]=$value;
+                }
+            }
+            return $result;
+        }
+        if ($final['type']=='_NONE') {
+            foreach ($list as $value) {
+                if (in_array($value, $final['allowed'])) {
+                    $list[]=$value;
+                }
+            }
+            return $list;
+        }
+    }
 }
