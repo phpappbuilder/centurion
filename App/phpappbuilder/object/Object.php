@@ -2,13 +2,13 @@
 /**
  * Created by PhpStorm.
  * User: server
- * Date: 25.07.18
- * Time: 11:52
+ * Date: 01.08.18
+ * Time: 11:13
  */
 
 namespace App\phpappbuilder\object;
 
 
-class RootObject extends Object {
+class Object implements ObjectInterface {
 
 }

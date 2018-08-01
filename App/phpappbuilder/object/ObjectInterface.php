@@ -8,5 +8,14 @@ interface ObjectInterface
     public function getName(); //Возвращает название типа объекта
     public function getIcon(); //Возвращает иконку объекта
     public function getDescription(); //Возвращает описание объекта
-    public function getChildsTypes(); //Возвращает массив с классами объектов которые могут быть детьми этого объекта
+
+    public function getChilds();
+    public function getParent();
+
+    public function addObject();
+    public function removeObject();
+
+    public function getData();
+    public function
+
 }

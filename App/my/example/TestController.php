@@ -20,7 +20,7 @@ class TestController extends Controller
         $zz = $ac->child(RootObject::class,RootObject::class);
         bdump($zz, 'check object');
 
-
+            
             bdump($this->request->request->get('forma'), 'содержимое формы!!!');
             $t_con = new \App\phpappbuilder\helpers\Helpers\Collection(['name'=>'Пездюки']);
             $t_con->setHelper('item_1', new \App\phpappbuilder\helpers\Helpers\Text(['label'=>'Имя пездюка', 'placeholder'=>'Как зовут твоего пездюка?', 'required'=>'']));

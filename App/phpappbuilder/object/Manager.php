@@ -3,6 +3,10 @@ namespace App\phpappbuilder\object;
 
 
 class Manager {
+
+    protected $route='';
+    protected $ObjectContainer;
+
     public function __construct(){
 
     }

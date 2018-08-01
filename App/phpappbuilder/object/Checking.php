@@ -11,11 +11,18 @@ use Space\Get as Space;
  */
 final class Checking
 {
+    public $object='';
     public $all_except = [];
     public $none_but = [];
     public $none_but_null = false;
     public $allowed = [];
     public $banned = [];
+    public $multiple = false;
+    public $gitignored = false;
+
+    public function __construct($class){
+        $this->object=$class;
+    }
 
     protected function setCheck($name, $value){
         if (is_array($value)){
@@ -38,7 +45,7 @@ final class Checking
             foreach ($collection as $value){
                 if ($value['object']==$class){
                     if (isset($value['all_except'])){$this->setCheck('all_except',$value['all_except']);}
-                    if ($value['none_but']==null or is_null($value['none_but'])){if($value['none_but']==null){$this->none_but_null=true;} else {$this->setCheck('none_but',$value['none_but']);}}
+                    if (isset($value['none_but']) or is_null($value['none_but'])){if($value['none_but']==null){$this->none_but_null=true;} else {$this->setCheck('none_but',$value['none_but']);}}
                     if (isset($value['allowed'])){$this->setCheck('allowed',$value['allowed']);}
                     if (isset($value['banned'])){$this->setCheck('banned',$value['banned']);}
                 }
@@ -46,16 +53,35 @@ final class Checking
         }
     }
 
-    protected function getChild($class){
+    protected function getChild($class)
+    {
         $result = [];
         $collection = Space::Collection('phpappbuilder/object/checking_child');
-        if ($collection != null && is_array($collection) && count($collection)>0){
-            foreach ($collection as $value){
-                if ($value['object']==$class){
-                    if (isset($value['all_except'])){$this->setCheck('all_except',$value['all_except']);}
-                    if (isset($value['none_but']) or is_null($value['none_but'])){if($value['none_but']==null){$this->none_but_null=true;} else {$this->setCheck('none_but',$value['none_but']);}}
-                    if (isset($value['allowed'])){$this->setCheck('allowed',$value['allowed']);}
-                    if (isset($value['banned'])){$this->setCheck('banned',$value['banned']);}
+        if ($collection != null && is_array($collection) && count($collection) > 0) {
+            foreach ($collection as $value) {
+                if ($value['object'] == $class) {
+                    if (isset($value['all_except'])) {
+                        $this->setCheck('all_except', $value['all_except']);
+                    }
+                    if (isset($value['none_but']) or is_null($value['none_but'])) {
+                        if ($value['none_but'] == null) {
+                            $this->none_but_null = true;
+                        } else {
+                            $this->setCheck('none_but', $value['none_but']);
+                        }
+                    }
+                    if (isset($value['allowed'])) {
+                        $this->setCheck('allowed', $value['allowed']);
+                    }
+                    if (isset($value['banned'])) {
+                        $this->setCheck('banned', $value['banned']);
+                        if (isset($value['multiple']) && $value['multiple'] == true) {
+                            $this->multiple = true;
+                        }
+                    }
+                    if (isset($value['gitignored']) && $value['gitignored']==true){
+                        $this->gitignored=true;
+                    }
                 }
             }
         }
@@ -75,7 +101,6 @@ final class Checking
         $status = 'ALL_';
         if (count($this->all_except)>0){
             $status = 'ALL_';
-
             return ['type'=>$status, 'banned'=>array_unique(array_merge($this->all_except , $banned))];
         } else {
             if (count($this->none_but)>0){
@@ -85,17 +110,15 @@ final class Checking
             } else {
                 if ($this->none_but_null){
                     $status = 'NONE_';
-
                     return ['type'=>$status, 'allowed'=>$this->allowed];
                 }
-
                 return ['type'=>$status, 'banned'=>$this->banned];
             }
         }
     }
 
-    public function parent($object_class , $check_class){
-        $this->getParent($object_class);
+    public function isParent($check_class){
+        $this->getParent($this->object);
         $final = $this->finalCheck();
         if ($final['type']=='ALL_') {
             if (!in_array($check_class, $final['banned'])){
@@ -113,8 +136,8 @@ final class Checking
         }
     }
 
-    public function child($object_class , $check_class){
-        $this->getChild($object_class);
+    public function isChild($check_class){
+        $this->getChild($this->object);
         $final = $this->finalCheck();
         bdump($final, 'test');
         if ($final['type']=='ALL_') {
@@ -135,7 +158,7 @@ final class Checking
 
 
     protected function getList(){
-        $collection = Space::Collection('phpappbuilder/object/add');
+        $collection = Space::Collection('phpappbuilder/object/object');
         if ($collection != null && is_array($collection) && count($collection)>0){
             return $collection;
         }
@@ -145,9 +168,9 @@ final class Checking
     /**
      * @return array
      */
-    public function getParentList($object_class): array
+    public function getParentList(): array
     {
-        $this->getParent($object_class);
+        $this->getParent($this->object);
         $final = $this->finalCheck();
         $list = $this->getList();
         $result = [];
@@ -172,9 +195,9 @@ final class Checking
     /**
      * @return array
      */
-    public function getChildList($object_class): array
+    public function getChildList(): array
     {
-        $this->getChild($object_class);
+        $this->getChild($this->object);
         $final = $this->finalCheck();
         $list = $this->getList();
         $result = [];
@@ -194,5 +217,10 @@ final class Checking
             }
             return $list;
         }
+    }
+
+    public function getMultiple()
+    {
+        return $this->multiple;
     }
 }
