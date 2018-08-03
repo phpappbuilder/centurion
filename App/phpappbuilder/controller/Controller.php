@@ -12,7 +12,7 @@ class Controller
     public $controller;
     public $action;
 
-    function __construct($args, $request)
+    function __construct($request, $response, $args)
         {
             $this->route = $args['_route']; unset($args['_route']);
             $this->controller = $args['_controller']; unset($args['_controller']);

@@ -195,8 +195,7 @@ final class Checking
     /**
      * @return array
      */
-    public function getChildList(): array
-    {
+    public function getChildList(): array {
         $this->getChild($this->object);
         $final = $this->finalCheck();
         $list = $this->getList();
@@ -205,6 +204,7 @@ final class Checking
             foreach($list as $value){
                 if (!in_array($value, $final['banned'])){
                     $result[]=$value;
+                    $this->validator->phpappbuilder->getChild()[3]->debug->BackTrace;
                 }
             }
             return $result;
@@ -219,8 +219,7 @@ final class Checking
         }
     }
 
-    public function getMultiple()
-    {
+    public function getMultiple(){
         return $this->multiple;
     }
 }

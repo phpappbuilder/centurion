@@ -9,8 +9,6 @@ use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\HttpFoundation\Response;
-
 
 class Router
 {
@@ -59,7 +57,7 @@ class Router
 
         }
 
-    static function url($route_name , $args , $absolute = false)
+    static function url($route_name , $args = [] , $absolute = false)
         {
             $collection = new RouteCollection();
             $space = Space::Collection('phpappbuilder/router/collection');
