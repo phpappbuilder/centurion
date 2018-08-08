@@ -9,7 +9,7 @@ class Middleware
     public $route;
     public $args;
 
-    public function __construct($request, $response, $route, $args){
+    public function __construct($request, $response, $route, $args) {
         $this->request=$request;
         $this->response=$response;
         $this->route=$route;

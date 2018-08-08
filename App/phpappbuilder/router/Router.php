@@ -1,77 +1,91 @@
 <?php
 namespace App\phpappbuilder\router;
 
-use Space\Get as Space;
-use Symfony\Component\Routing;
-use Symfony\Component\Routing\Matcher\UrlMatcher;
-use Symfony\Component\Routing\RequestContext;
-use Symfony\Component\Routing\RouteCollection;
-use Symfony\Component\Routing\Route;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouteCollection as RC;
+use Symfony\Component\Routing\Route as RouteObject;
 
-class Router
-{
-    private $collection;
+class Router {
+    protected $collection;
 
-    public function __construct()
+    protected $middleware = '';
+    protected $NamePrefix = '';
+
+    function __construct(string $prefix = '')
+    {
+        $this->collection = new RC();
+        if ($prefix != '') {$this->collection->addNamePrefix($prefix);}
+
+        $this->__before();
+
+        foreach (get_class_methods($this) as $key => $value)
         {
-            $this->collection = new RouteCollection();
-            $space = Space::Collection('phpappbuilder/router/collection');
-            if($space!=NULL && count($space)>0)
-            {
-                foreach($space as $key => $value)
-                {
-                    $router = new $value();
-                    $this->collection->addCollection($router->__return());
+            if ($value!='__construct' && $value!='__collection' && $value!='__after' && $value!='__before' && $value!='__return') {
+                $this->_route = '';
+                $this->_controller = '';
+                $this->_action = '';
+                $this->requirements = [];
+                $this->options = [];
+                $this->host = '';
+                $this->schemes = [];
+                $this->methods = [];
+                $this->condition = '';
+
+                $this->$value();
+                $default['_controller'] = $this->_controller;
+                if (isset($this->_action) && $this->_action != '') {
+                    $default['_action'] = $this->_action;
                 }
+                $object = new RouteObject($this->_route, $default);
+                $object->addRequirements($this->requirements);
+                $object->setOptions($this->options);
+                $object->setHost($this->host);
+                $object->setSchemes($this->schemes);
+                $object->setMethods($this->methods);
+                $object->setCondition($this->condition);
+                $this->collection->add($value, $object);
             }
         }
+    }
 
-    public function run()
-        {
+    protected function
 
-            $request = Request::createFromGlobals();
-            $context = new RequestContext();
-            $context->fromRequest($request);
-            $matcher = new UrlMatcher($this->collection, $context);
-
-            try {
-
-                $info = $matcher->match($request->getPathInfo());
-
-                $controller = $info['_controller'];
-                if (!isset($info['_action']) or $info['_action']=='') {$info['action']='index'; $action = 'index';}
-                else {$action = $info['_action'];}
-                $get = new $controller($info , $request);
-                return $get -> $action();
-
-            } catch (Routing\Exception\ResourceNotFoundException $exception) {
-
-                $response = Space::Key('phpappbuilder/router/err404');
-                $response -> send();
-            } catch (Exception $exception) {
-                $response = Space::Key('phpappbuilder/router/err500');
-                $response -> send();
-            }
-
+    protected function Controller(string $string){
+        $string = explode('@', $string);
+        if(count($string)==1){
+            return ['_controller'=>$string[0], '_action'=>'index'];
         }
-
-    static function url($route_name , $args = [] , $absolute = false)
-        {
-            $collection = new RouteCollection();
-            $space = Space::Collection('phpappbuilder/router/collection');
-            if($space!=NULL && count($space)>0)
-            {
-                foreach($space as $key => $value)
-                {
-                    $router = new $value();
-                    $collection->addCollection($router->__return());
-                }
-            }
-            $context = new RequestContext('');
-            $generator = new Routing\Generator\UrlGenerator($collection, $context);
-            if (!$absolute){return $generator->generate($route_name, $args);}
-            else {return $generator->generate($route_name, $args , UrlGeneratorInterface::ABSOLUTE_URL);}
+        if(count($string)==2){
+            return ['_controller'=>$string[0], '_action'=>$string[1]];
         }
+    }
+
+
+    protected function addMethod($method, $route, $controller, $setting){
+        $default = $this->Controller($controller);
+        if (isset($setting['middleware'])){$default['middleware']=$setting['middleware'];}
+        $object = new RouteObject($route, $default);
+        $object->setMethods($method);
+        if ()
+    }
+
+    public function __before(){
+
+    }
+
+    public function __after(){
+
+    }
+
+    public function __collection()
+    {
+        if ($this->NamePrefix != '') {$this->collection->addNamePrefix($this->NamePrefix);}
+        if ($this->RoutePrefix != '') {$this->collection->addPrefix($this->RoutePrefix);}
+    }
+
+    public function __return()
+    {
+        $this->__after();
+        $this->__collection();
+        return $this->collection;
+    }
 }

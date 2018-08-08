@@ -1,9 +1,9 @@
 <?php
 require_once __DIR__ . '/vendor/autoload.php';
-use App\phpappbuilder\router\Router;
+use App\phpappbuilder\router\App;
 use Tracy\Debugger;
 
 Debugger::enable();
 
-$router = new Router();
-$router->run();
+$app = new App();
+$app->run();

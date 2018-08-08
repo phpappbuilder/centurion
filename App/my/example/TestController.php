@@ -2,7 +2,7 @@
 namespace App\my\example;
 
 use App\phpappbuilder\helpers\Form;
-use App\phpappbuilder\router\Router;
+use App\phpappbuilder\router\App;
 use App\phpappbuilder\controller\Controller;
 use \Symfony\Component\HttpFoundation\Response;
 use App\phpappbuilder\template\Template;
@@ -44,7 +44,7 @@ class TestController extends Controller
                 ['title'=>'My test form', 'submit'=>true, 'description'=>'this is test description' ,
                 'form'=>[
                         'method'=>'post',
-                        'action'=>Router::url('MyExampleFirstRoute', ['trans'=>'config'])
+                        'action'=>App::url('MyExampleFirstRoute', ['trans'=>'config'])
                 ]
                 ]
             );
@@ -163,7 +163,7 @@ class TestController extends Controller
                     )
             );
 
-            //$this->response->setContent('<html><body><h1>Hello world.'.$this->arg['trans'].'</h1><a href="'.Router::url($this->route , ['trans'=>'sergey']).'">this route - '.$this->route.'</a></body></html>'.);
+            //$this->response->setContent('<html><body><h1>Hello world.'.$this->arg['trans'].'</h1><a href="'.App::url($this->route , ['trans'=>'sergey']).'">this route - '.$this->route.'</a></body></html>'.);
             $this->response->setStatusCode(Response::HTTP_OK);
             $this->response->headers->set('Content-Type', 'text/html');
             $this->response->send();
