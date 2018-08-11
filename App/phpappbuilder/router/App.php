@@ -14,64 +14,59 @@ class App
 {
     private $collection;
 
-    public function __construct()
+    public function __construct() {
+        $this->collection = new RouteCollection();
+        $space = Space::Collection('phpappbuilder/router/collection');
+        if($space!=NULL && count($space)>0)
         {
-            $this->collection = new RouteCollection();
-            $space = Space::Collection('phpappbuilder/router/collection');
-            if($space!=NULL && count($space)>0)
+            foreach($space as $key => $value)
             {
-                foreach($space as $key => $value)
-                {
-                    $router = new $value();
-                    $this->collection->addCollection($router->__return());
-                }
+                $router = new $value();
+                $this->collection->addCollection($router->__return());
             }
         }
+    }
 
-    public function run()
-        {
+    public function f3() {
 
-            $request = Request::createFromGlobals();
-            $context = new RequestContext();
-            $context->fromRequest($request);
-            $matcher = new UrlMatcher($this->collection, $context);
+    }
 
-            try {
+    public function run() {
+        $request = Request::createFromGlobals();
+        $context = new RequestContext();
+        $context->fromRequest($request);
+        $matcher = new UrlMatcher($this->collection, $context);
 
-                $info = $matcher->match($request->getPathInfo());
-
-                $controller = $info['_controller'];
-                if (!isset($info['_action']) or $info['_action']=='') {$info['action']='index'; $action = 'index';}
-                else {$action = $info['_action'];}
-                $get = new $controller($info , $request);
-                return $get -> $action();
-
-            } catch (Routing\Exception\ResourceNotFoundException $exception) {
-
-                $response = Space::Key('phpappbuilder/router/err404');
-                $response -> send();
-            } catch (Exception $exception) {
-                $response = Space::Key('phpappbuilder/router/err500');
-                $response -> send();
-            }
-
+        try {
+            $info = $matcher->match($request->getPathInfo());
+            $controller = $info['_controller'];
+            if (!isset($info['_action']) or $info['_action']=='') {$info['action']='index'; $action = 'index';}
+            else {$action = $info['_action'];}
+            $get = new $controller($info , $request);
+            return $get -> $action();
+        } catch (Routing\Exception\ResourceNotFoundException $exception) {
+            $response = Space::Key('phpappbuilder/router/err404');
+            $response -> send();
+        } catch (Exception $exception) {
+            $response = Space::Key('phpappbuilder/router/err500');
+            $response -> send();
         }
+    }
 
-    static function url($route_name , $args = [] , $absolute = false)
+    static function url(string $route_name , array $args = [] , bool $absolute = false) {
+        $collection = new RouteCollection();
+        $space = Space::Collection('phpappbuilder/router/collection');
+        if($space!=NULL && count($space)>0)
         {
-            $collection = new RouteCollection();
-            $space = Space::Collection('phpappbuilder/router/collection');
-            if($space!=NULL && count($space)>0)
+            foreach($space as $key => $value)
             {
-                foreach($space as $key => $value)
-                {
-                    $router = new $value();
-                    $collection->addCollection($router->__return());
-                }
+                $router = new $value();
+                $collection->addCollection($router->__return());
             }
-            $context = new RequestContext('');
-            $generator = new Routing\Generator\UrlGenerator($collection, $context);
-            if (!$absolute){return $generator->generate($route_name, $args);}
-            else {return $generator->generate($route_name, $args , UrlGeneratorInterface::ABSOLUTE_URL);}
         }
+        $context = new RequestContext('');
+        $generator = new Routing\Generator\UrlGenerator($collection, $context);
+        if (!$absolute){return $generator->generate($route_name, $args);}
+        else {return $generator->generate($route_name, $args , UrlGeneratorInterface::ABSOLUTE_URL);}
+    }
 }
