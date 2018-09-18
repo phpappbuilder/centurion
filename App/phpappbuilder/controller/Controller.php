@@ -1,8 +1,6 @@
 <?php
 namespace App\phpappbuilder\controller;
 
-use App\phpappbuilder\controller\Response as Resp;
-
 class Controller
 {
     public $request;
@@ -20,7 +18,7 @@ class Controller
             else {$this->action = 'index';}
             $this->arg = $args; unset($args);
             $this->request = $request;
-            $this->response = new Resp();
+            $this->response = $response;
         }
 
 }

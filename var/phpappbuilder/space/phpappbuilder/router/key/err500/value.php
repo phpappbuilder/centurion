@@ -1,3 +1,3 @@
 <?php
 
-return new Symfony\Component\HttpFoundation\Response('An error occurred', 500);
+return new \App\phpappbuilder\http\Response('An error occurred', 500);

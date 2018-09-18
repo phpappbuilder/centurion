@@ -1,6 +1,6 @@
 <?php
 
-namespace App\phpappbuilder\controller;
+namespace App\phpappbuilder\http;
 
 use \Symfony\Component\HttpFoundation\Response as Resp;
 

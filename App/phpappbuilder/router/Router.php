@@ -4,52 +4,25 @@ namespace App\phpappbuilder\router;
 use Symfony\Component\Routing\RouteCollection as RC;
 use Symfony\Component\Routing\Route as RouteObject;
 
-class Router {
-    protected $collection;
+class Router
+{
+    public $middleware = []; //проброшенные посредники
+    public $router_collection; //объект RouterCollection
 
-    protected $middleware = '';
-    protected $NamePrefix = '';
+    public $router = []; //все роуты здесь
+    public $routerGroup = []; //все группы роутов здесь
 
-    function __construct(string $prefix = '')
-    {
-        $this->collection = new RC();
-        if ($prefix != '') {$this->collection->addNamePrefix($prefix);}
+    public $name_prefix = '';//Префикс имени роута
+    public $route_prefix = '';//Префикс всех роутов данной коллекции
 
-        $this->__before();
 
-        foreach (get_class_methods($this) as $key => $value)
-        {
-            if ($value!='__construct' && $value!='__collection' && $value!='__after' && $value!='__before' && $value!='__return') {
-                $this->_route = '';
-                $this->_controller = '';
-                $this->_action = '';
-                $this->requirements = [];
-                $this->options = [];
-                $this->host = '';
-                $this->schemes = [];
-                $this->methods = [];
-                $this->condition = '';
 
-                $this->$value();
-                $default['_controller'] = $this->_controller;
-                if (isset($this->_action) && $this->_action != '') {
-                    $default['_action'] = $this->_action;
-                }
-                $object = new RouteObject($this->_route, $default);
-                $object->addRequirements($this->requirements);
-                $object->setOptions($this->options);
-                $object->setHost($this->host);
-                $object->setSchemes($this->schemes);
-                $object->setMethods($this->methods);
-                $object->setCondition($this->condition);
-                $this->collection->add($value, $object);
-            }
-        }
+    public function __construct(string $router_prefix = NULL){
+        $this->router_collection = new RC();
+        if ($router_prefix != NULL) { $this->name_prefix = $router_prefix;}
     }
 
-    protected function
-
-    protected function Controller(string $string){
+    protected function controller(string $string){
         $string = explode('@', $string);
         if(count($string)==1){
             return ['_controller'=>$string[0], '_action'=>'index'];
@@ -59,33 +32,171 @@ class Router {
         }
     }
 
-
-    protected function addMethod($method, $route, $controller, $setting){
-        $default = $this->Controller($controller);
-        if (isset($setting['middleware'])){$default['middleware']=$setting['middleware'];}
-        $object = new RouteObject($route, $default);
-        $object->setMethods($method);
-        if ()
+    protected function stringToArr($value){
+        $result = [];
+        if(is_array($value)){
+            return $value;
+        }
+        if(is_string($value)){
+            $result[] = $value;
+            return $result;
+        }
+        return [];
     }
 
-    public function __before(){
+    protected function middleware($list){
+            $result = []; // здесь будет объединение массивов
 
+            foreach($this->middleware as $val) { // считываем переданных ранее посредников
+                $result[] = $val;
+            }
+
+            if (count($list)>0){
+                foreach($list as $val) { // считываем переданный массив
+                    $result[] = $val;
+                }
+            }
+            return array_unique($result);
     }
 
-    public function __after(){
+    /**
+     * @param array $params
+     *   $this->_route = '';
+     *   $this->_controller = '';
+     *   $this->_action = '';
+     *   $this->requirements = [];
+     *   $this->options = [];
+     *   $this->host = '';
+     *   $this->schemes = [];
+     *   $this->methods = [];
+     *   $this->condition = '';
+     */
 
+    protected function addRoute(string $route, string $controller, array $params = []){
+        $this->router[]=[
+            'route'=>$route,
+            'controller'=>$controller,
+            'params'=>$params
+        ];
     }
 
-    public function __collection()
-    {
-        if ($this->NamePrefix != '') {$this->collection->addNamePrefix($this->NamePrefix);}
-        if ($this->RoutePrefix != '') {$this->collection->addPrefix($this->RoutePrefix);}
+    protected function addCompile (string $route, string $controller, array $params = []){
+        $controller = $this->controller($controller);
+
+        $object = new RouteObject($route, [
+            '_controller'=>$controller['_controller'],
+            '_action'=>['_action'],
+            '_middleware'=>$this->middleware($this->stringToArr($params['_middleware']))
+        ]);
+
+        if(isset($params['require']) && is_array($params['require'])){
+            $object->addRequirements($params['require']);
+        }
+
+        if(isset($params['option']) && is_array($params['option'])){
+            $object->setOptions($params['option']);
+        }
+
+        if(isset($params['host']) && is_string($params['host'])){
+            $object->setHost($params['host']);
+        }
+
+        if(isset($params['scheme'])){
+            $object->setHost($this->stringToArr($params['scheme']));
+        }
+
+        if(isset($params['method'])){
+            $object->setHost($this->stringToArr($params['method']));
+        }
+
+        if(isset($params['condition']) && is_string($params['condition'])){
+            $object->setHost($params['condition']);
+        }
+
+        if (isset($params['name'])){
+            $this->router_collection->add($params['name'], $object);
+        }
     }
 
-    public function __return()
-    {
-        $this->__after();
-        $this->__collection();
-        return $this->collection;
+    protected function addGroup(string $prefix, Router $router, array $params = []){
+        $object = $router;
+        if(isset($params['middleware'])){
+            $middleware = $this->middleware($this->stringToArr($params['middleware']));
+        } else {
+            $middleware = $this->middleware([]);
+        }
+        $object->middleware($middleware);
+        $object->route_prefix = $prefix;
+
+        $this->routerGroup[] = $object;
+    }
+
+    public function get(string $route, string $controller, array $params = []){
+        $params['method'] = 'GET';
+        $this->addRoute($route, $controller, $params);
+        return $this;
+    }
+
+    public function post(string $route, string $controller, array $params = []){
+        $params['method'] = 'POST';
+        $this->addRoute($route, $controller, $params);
+        return $this;
+    }
+
+    public function put(string $route, string $controller, array $params = []){
+        $params['method'] = 'PUT';
+        $this->addRoute($route, $controller, $params);
+        return $this;
+    }
+
+    public function delete(string $route, string $controller, array $params = []){
+        $params['method'] = 'DELETE';
+        $this->addRoute($route, $controller, $params);
+        return $this;
+    }
+
+    public function path(string $route, string $controller, array $params = []){
+        $params['method'] = 'PATH';
+        $this->addRoute($route, $controller, $params);
+        return $this;
+    }
+
+    public function head(string $route, string $controller, array $params = []){
+        $params['method'] = 'HEAD';
+        $this->addRoute($route, $controller, $params);
+        return $this;
+    }
+
+    public function options(string $route, string $controller, array $params = []){
+        $params['method'] = 'OPTIONS';
+        $this->addRoute($route, $controller, $params);
+        return $this;
+    }
+
+    public function any(string $route, string $controller, array $params = []){
+        return $this;
+    }
+
+    public function method($method ,string $route, string $controller, array $params = []){
+        $params['method'] = $this->stringToArr($method);
+        $this->addRoute($route, $controller, $params);
+        return $this;
+    }
+
+    public function group(string $prefix, Router $router, array $params = []){
+        $this->addGroup($prefix, $router, $params);
+        return $this;
+    }
+
+    public function run(){
+        foreach($this->router as $value){
+            $this->addCompile($value['route'], $value['controller'], $value['params']);
+        }
+
+        foreach($this->routerGroup as $value){
+            $object = $value -> run();
+            $this->router_collection->addCollection($object);
+        }
+        return $this->router_collection;
     }
 }
