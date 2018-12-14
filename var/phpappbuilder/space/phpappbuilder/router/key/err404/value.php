@@ -1,3 +1,3 @@
 <?php
 
-return new \App\phpappbuilder\http\Response('Not Found', 404);
+return new App\phpappbuilder\http\Response('Not Found sergey - edition', 404);
